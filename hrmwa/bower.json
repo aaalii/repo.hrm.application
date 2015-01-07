@@ -1,0 +1,10 @@
+{
+  "name": "HRM-WebApplication",
+  "version": "0.0.7",
+  "description": "This is a HRM WebApplication!",
+  "dependencies": {
+		"angular": "^1.2",
+		"angular-route": "^1.2",
+		"angular-resource": "^1.2"
+	}
+}

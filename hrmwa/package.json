@@ -1,0 +1,26 @@
+{
+  "name": "HRM-WebApplication",
+  "version": "1.0.0",
+  "description": "This is a HRM WebApplication!",
+  "main": "app.js",
+  "dependencies": {
+    "body-parser": "^1.10.0",
+    "compression": "^1.2.2",
+    "connect-flash": "^0.1.1",
+    "ejs": "^1.0.0",
+    "express": "^4.10.6",
+    "express-ejs-layouts": "^1.1.0",
+    "express-session": "^1.9.3",
+    "method-override": "^2.3.0",
+    "mongoose": "^3.8.21",
+    "morgan": "^1.5.0",
+    "passport": "^0.2.1",
+    "passport-local": "^1.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC"
+}

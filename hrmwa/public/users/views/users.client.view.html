@@ -1,0 +1,39 @@
+<section data-ng-controller="UsersController" data-ng-init="find()">
+	<h1>Users</h1>
+	<div class="row">
+		<div class="col-md-6">
+			<table class="table table-striped">
+				<thead>
+					<tr>
+						<td colspan="6"><input type="text" placeholder="Search..." data-ng-model="search"></td>
+					</tr>
+					<tr>
+						<td>Voornaam</td>
+						<td>Achternaam</td>
+						<td>Email</td>
+						<td>Gebruikersnaam</td>
+						<td>Wachtwoord</td>
+						<td colspan="2"></td>
+						<td colspan="2"></td>
+					<tr>
+				</thead>
+				<tbody>
+					<tr data-ng-repeat="user in users | filter:search">		
+
+						<td>{{user.firstName}}</td>
+						<td>{{user.lastName}}</td>
+						<td>{{user.email}}</td>
+						<td>{{user.username}}</td>
+						<td>{{user.password}}</td>
+						<td><a href="javascript:;" ng-click="delete(user)" class="glyphicon glyphicon-minus-sign"></a></td>
+						<td>
+							<a href="javascript:;" ng-click="user.updating=true" ng-if="!user.updating" class="glyphicon glyphicon-plus-sign"></a>
+							<a href="javascript:;" ng-click="update();user.updating=false" ng-if="user.updating" class="glyphicon glyphicon-plus-sign"></a>
+
+						</td>
+					</tr>
+				</tbody>
+			</table>						
+		</div>
+	</div>
+</section>

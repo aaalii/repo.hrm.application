@@ -1,0 +1,246 @@
+<section ng-controller="EmployeesController" data-ng-init="find()">
+	<h1>Medewerkers</h1>
+	<div class="row">
+		<div class="col-md-8">
+			<table class="table table-striped table-condensed table-hover">
+				<thead>
+					<tr>
+						<td colspan="3"><input type="text" placeholder="Search..." ng-model="search"></td>
+						<td colspan="5">Laat
+							<select ng-init="selected_amount = 10" ng-model="selected_amount">
+								<option ng-value="10">10</option>
+								<option ng-value="15">15</option>
+								<option ng-value="25">25</option>
+								<option ng-value="50">50</option>
+								<option ng-value="100">100</option>
+							</select>
+							medewerkers per pagina zien</td>
+						</tr>
+						<tr>
+							<td><a href="" ng-click="reverse=false; order('firstname', false)">Voornaam</a>
+								(<a href="" ng-click="order('-firstname',false)">^</a>)</td>
+								<td><a href="" ng-click="reverse=!reverse; order('lastname', reverse)">Achternaam</a></td>
+								<td><a href="" ng-click="reverse=!reverse; order('dateofbirth', reverse)">Geboortedatum</a></td>
+								<td><a href="" ng-click="reverse=!reverse; order('gender', reverse)">Geslacht</a></td>
+								<td>Work E-Mail</td>
+								<td colspan="1"></td>
+								<td><a href="javascript:;" data-toggle="modal" data-target="#addModal" style="color: rgb(0,128,255)" class="glyphicon glyphicon-plus"></a></td>
+								<td colspan="1"></td>
+								<tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="employee in employees | filter:search | 	startFrom:currentPage*selected_amount | limitTo:selected_amount">
+										<td>{{employee.firstname}}</td>
+										<td>{{employee.lastname}}</td>
+										<td>{{employee.dateofbirth}}</td>
+										<td>{{employee.gender}}</td>
+										<td><a href="mailto:{{employee.workmail}}" class="glyphicon glyphicon-envelope"></a></td>
+										<td>
+											<a href="javascript:;" ng-click="delete(employee)" style="color: rgb(175,0,0)" class="glyphicon glyphicon-trash"></a>
+										</td>
+										<td>
+											<a href="" data-toggle="modal" ng-click="data.emp=employee" data-target="#editModal" 
+											style="color: rgb(0,150,0)" class="glyphicon glyphicon-pencil"></a>
+										</td>
+										<td>
+											<a href="javascript:;" ng-click="data.emp=employee" data-toggle="modal" data-target="#infoModal" style="color: rgb(0,128,255)" class="fa fa-info"></a>
+										</td>
+										<tr>
+
+											<div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h4 class="modal-title" id="myModalLabel">{{data.emp.firstname + ' ' + data.emp.lastname}}</h4>
+														</div>
+														<div class="modal-body">
+															<form class="form-horizontal">
+																<div class="row">
+																	<div class="col-xs-4">
+																		Voornaam:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.firstname" >
+																		Achternaam:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.lastname" >
+																		Roepnaam:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.othername" >
+																		Geboortedatum:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.dateofbirth" >
+																		Geslacht:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.gender" >
+																		Nationaliteit:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.nationality" >
+																		Burgerlijke staat:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.maritalstatus" >
+																		Adres:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.address" >
+																		Stad:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.town" >
+																		Postcode:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.postcode" >
+																		Land:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.country" >
+																	</div>
+																	<div class="col-xs-4">
+																		Huistelefoon:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.hometel" >
+																		Mobiel prive:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.homemobile" >
+																		Mail prive:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.homemail" >
+																		Werktelefoon:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.worktel" >
+																		Mobiel werk:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.workmobile" >
+																		Mail werk:<br>
+																		<input type="text" class="form-control input-sm" data-ng-model="data.emp.workmail" >
+																		Overige:<br>
+																		<textarea class="form-control input-sm" rows="3" data-ng-model="data.emp.othercomments" ></textarea>
+																	</div>
+																</div>
+															</form>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Sluit</button>
+																<button type="button" ng-click="update()" class="btn btn-primary" data-dismiss="modal">Opslaan</button>
+															</div> 
+														
+													</div>
+												</div>
+											</div>
+
+											<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h4 class="modal-title" id="myModalLabel">{{data.emp.firstname + ' ' + data.emp.lastname}}</h4>
+														</div>
+															<form>
+															<div class="modal-body">
+																<div class="row">
+																	<div class="col-xs-4">
+																		<strong>Voornaam:</strong><br>
+																		{{data.emp.firstname}}<br><br>
+																		<strong>Achternaam:</strong><br>
+																		{{data.emp.lastname}}<br><br>
+																		<strong>Roepnaam:</strong><br>
+																		{{data.emp.othername}}<br><br>
+																		<strong>Geboortedatum:</strong><br>
+																		{{data.emp.dateofbirth}}<br><br>
+																		<strong>Geslacht:</strong><br>
+																		{{data.emp.gender}}<br><br>
+																		<strong>Nationaliteit:</strong><br>
+																		{{data.emp.nationality}}<br><br>
+																		<strong>Burgerlijke staat:</strong><br>
+																		{{data.emp.maritalstatus}}<br><br>
+																		<strong>Adres:</strong><br>
+																		{{data.emp.address}}<br><br>
+																		<strong>Stad:</strong><br>
+																		{{data.emp.town}}<br><br>
+																		<strong>Postcode:</strong><br>
+																		{{data.emp.postcode}}<br><br>
+																		<strong>Land:</strong><br>
+																		{{data.emp.country}}<br><br>
+																	</div>
+																	<div class="col-xs-4">
+																		<strong>Huistelefoon:</strong><br>
+																		{{data.emp.hometel}}<br><br>
+																		<strong>Mobiel prive:</strong><br>
+																		{{data.emp.homemobile}}<br><br>
+																		<strong>Mail prive:</strong><br>
+																		{{data.emp.homemail}}<br><br>
+																		<strong>Werktelefoon:</strong><br>
+																		{{data.emp.worktel}}<br><br>
+																		<strong>Mobiel werk:</strong><br>
+																		{{data.emp.workmobile}}<br><br>
+																		<strong>Mail werk:</strong><br>
+																		{{data.emp.workmail}}<br><br>
+																		<strong>Overige:</strong><br>
+																		{{data.emp.othercomments}}<br><br>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Sluit</button>
+															</div> 
+														</form>
+													</div>
+												</div>
+											</div>
+
+											<div class="modal fade" id="addModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+												<div class="modal-dialog">
+													<div class="modal-content">
+														<div class="modal-header">
+															<h4 class="modal-title" id="myModalLabel">Voeg een nieuwe medewerker toe</h4>
+														</div>
+														<form novalidate>
+															<div class="modal-body">
+
+																<div class="form-group">
+																	<div class="col-xs-4">
+																		Voornaam:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Voornaam" data-ng-model="firstname" >
+																		Achternaam:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Achternaam" data-ng-model="lastname" >
+																		Roepnaam:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Roepnaam" data-ng-model="othername" >
+																		Geboortedatum:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Geboortedatum" data-ng-model="dateofbirth" >
+																		Geslacht:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Geslacht" data-ng-model="gender" >
+																		Nationaliteit:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Nationaliteit" data-ng-model="nationality" >
+																		Burgerlijke staat:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Burgerlijke staat" data-ng-model="maritalstatus" >
+																		Adres:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Adres" data-ng-model="address" >
+																		Stad:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Stad" data-ng-model="town" >
+																		Postcode:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Postcode" data-ng-model="postcode" >
+																		Land:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Land" data-ng-model="country" >
+																	</div>
+																	<div class="col-xs-4">
+																		Huistelefoon:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Huistelefoon" data-ng-model="hometel" >
+																		Mobiel prive:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Mobiel prive" data-ng-model="homemobile" >
+																		Mail prive:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Mail prive" data-ng-model="homemail" >
+																		Werktelefoon:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Werktelefoon" data-ng-model="worktel" >
+																		Mobiel werk:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Mobiel werk" data-ng-model="workmobile" >
+																		Mail werk:<br>
+																		<input type="text" class="form-control input-sm" placeholder="Mail werk" data-ng-model="workmail" >
+																		Overige:<br>
+																		<textarea class="form-control input-sm" rows="3" placeholder="Overige commentaar" data-ng-model="othercomments" ></textarea>
+																	</div>
+																</div>
+															</div>
+															<div class="modal-footer">
+																<button type="button" class="btn btn-default" data-dismiss="modal">Sluit</button>
+																<button type="button" ng-click="create()" class="btn btn-primary" data-dismiss="modal">Opslaan</button>
+															</div> 
+														</form>
+													</div>
+												</div>
+											</div>
+										</tbody>
+										<tfoot>
+											<tr>
+												<td colspan="8">
+													<button ng-disabled="currentPage == 0" ng-click="currentPage=currentPage-1">Previous</button>
+													{{currentPage+1}}/{{numberOfPages()}}
+													<button ng-disabled="currentPage >= data.length/pageSize - 1" ng-click="currentPage=currentPage+1">
+														Next</button>					 			
+													</td>
+												</tr>
+											</tfoot> 
+										</table>
+									</div>
+								</div>
+
+
+							</section>
