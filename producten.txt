@@ -1,0 +1,20 @@
+7.	Beschrijving mijlpaalproducten
+Plan van Aanpak
+
+DATABASE:
+EER-diagram
+RRM
+RIM
+
+SYSTEEM:
+Klassendiagram
+Use case diagram
+Use case beschrijvingen 
+Requirementsrapport
+Sequentiediagram
+Mastertestplan
+Logische en fysieke testen
+Moduletest
+Source-code
+Gebruikershandleiding
+
